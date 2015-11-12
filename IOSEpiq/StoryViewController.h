@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Story.h"
+
 @class Story;
 @class WordList;
 
-@interface StoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface StoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,StoryProtocol >
 @property (strong) Story *story;
 
 

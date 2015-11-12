@@ -12,12 +12,13 @@
 
 
 
--(instancetype)initWithText:(NSString*)text forcedWord:(NSString*)forcedWord{
+-(instancetype)initWithText:(NSString*)text forcedWord:(NSString*)forcedWord index:(int)index{
     self = [super init];
     if (self) {
-        self.forcedWord = forcedWord;
-        self.text = text;
-        
+        self.forcedWord                 = forcedWord;
+        self.text                       = text;
+        self.messageSentToConversation  = NO;
+        self.index                      = index;
     }
     return self;
 }

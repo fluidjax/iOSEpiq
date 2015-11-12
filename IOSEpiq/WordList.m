@@ -27,7 +27,7 @@
 
 -(NSString*)getRandomWord{
     long maxVal = [self.wordlist count];
-    long randomValue = rand()%maxVal;
+    long randomValue = arc4random()%maxVal;
     return [self.wordlist objectAtIndex:randomValue];
 }
 

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface HeaderCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *storyTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentWordLabel;
 
 @end

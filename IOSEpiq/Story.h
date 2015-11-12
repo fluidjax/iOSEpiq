@@ -7,19 +7,42 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Qredo.h"
+#import "QredoVault.h"
+#import "QredoRendezvous.h"
+#import "QredoConversation.h"
+
+
+@protocol StoryProtocol
+@required
+-(void)storyDidUpdate;
+
+@end
+
+
 @class StoryLine;
 @class WordList;
 
-@interface Story : NSObject
+@interface Story : NSObject <QredoRendezvousObserver, QredoConversationObserver>
 
 @property(strong) NSString *title;
 @property(strong) WordList *wordList;
-@property (assign) BOOL myTurn;
 @property(strong) NSString *currentWord;
+@property(assign) BOOL onePlayerGame;
+@property(assign) int nextAvailableStoreLineIndex;
+@property QredoClient *qredoClient;
+@property(strong) id<StoryProtocol> delegate;
+
 
 -(instancetype)initWithTitle:(NSString*)title wordList:(WordList*)wordList;
 
--(void)addStoryLine:(StoryLine*)storyLine;
+-(NSMutableAttributedString*)buildAttributedTextStory;
+-(void)addNewStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord;
 -(StoryLine*)storyLineAtIndex:(long)index;
 -(long)lineCount;
+-(BOOL)myTurn;
+
+
+-(void)createOrJoinRendezvous;
+
 @end

@@ -11,7 +11,7 @@
 #import "CompletedLineCell.h"
 #import "IncompleteLineCell.h"
 #import "HeaderCell.h"
-#import "Story.h"
+
 #import "WordList.h"
 
 @interface StoryViewController ()
@@ -20,91 +20,104 @@
 @property (assign) BOOL canAddNewStoryLine;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong) IBOutlet UITextView* activeField;
-@property (weak, nonatomic) IBOutlet UILabel *currentWordLabel;
+@property (weak, nonatomic) IBOutlet UILabel *storyTitle;
 
 @end
 
 @implementation StoryViewController
+
+-(void)storyDidUpdate{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    
+}
+
+
+-(void)viewDidLoad{
+    [self registerForKeyboardNotifications];
+    self.story.delegate = self;
+    [self.story createOrJoinRendezvous];
+    self.tableView.estimatedRowHeight = 100;
+    self.storyTitle.text = self.story.title;
+    [self.tableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+}
+
 
 - (IBAction)sendButtonPressed:(id)sender {
     NSString *textEntered = self.activeField.text;
     
     
     if ([textEntered containsString:self.story.currentWord]){
-        StoryLine *storyLine = [[StoryLine alloc] initWithText:textEntered forcedWord:self.story.currentWord];
-        [self.story addStoryLine:storyLine];
-        [self changeToOtherPersonsTurn];
-        [self changeToMyTurn];
+        [self.story addNewStoryLine:textEntered forcedWord:self.story.currentWord];
+        [self.tableView reloadData];
+        
+        if ([self.story onePlayerGame]==YES){
+            [self.activeField becomeFirstResponder];
+        }
+        
     }else{
-        NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
-        
-        UIAlertController * missingWordAlert=   [UIAlertController
-                                      alertControllerWithTitle:@"Word Missing!"
-                                      message:message
-                                      preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* ok = [UIAlertAction
-                             actionWithTitle:@"OK"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
-                                 
-                             }];
-        [missingWordAlert addAction:ok];
-        
-        [self presentViewController:missingWordAlert animated:YES completion:nil];
-        
-         }
+//        NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
+//        
+//        UIAlertController * missingWordAlert=   [UIAlertController
+//                                      alertControllerWithTitle:@"Word Missing!"
+//                                      message:message
+//                                      preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction* ok = [UIAlertAction
+//                             actionWithTitle:@"OK"
+//                             style:UIAlertActionStyleDefault
+//                             handler:^(UIAlertAction * action)
+//                             {
+//                                 [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
+//                                 
+//                             }];
+//        [missingWordAlert addAction:ok];
+//        
+//        [self presentViewController:missingWordAlert animated:YES completion:nil];
+//        
+    }
 }
 
 
 
 
--(void)viewDidLoad{
-    [self registerForKeyboardNotifications];
-    self.tableView.estimatedRowHeight = 100;
-//    self.tableView.rowHeight = UITableViewAutomaticDimension;
-    [self changeToMyTurn];
-}
-
--(void)changeToOtherPersonsTurn{
-    self.story.myTurn=NO;
-    self.currentWordLabel.text = @"Waiting. . . ";
-    
-    [self.tableView reloadData];
-}
 
 
 
--(void)changeToMyTurn{
-    self.story.myTurn=YES;
-    self.currentWordLabel.text = self.story.currentWord;
-    [self.tableView reloadData];    
-}
 
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.story.myTurn==YES){
-        return [self.story lineCount]+1;
-    }
-    return [self.story lineCount];
+    return 2;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     HeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell"];
-    cell.storyTitleLabel.text = self.story.title;
+    if ([self.story myTurn]){
+        cell.currentWordLabel.text = self.story.currentWord;
+    }else{
+        cell.currentWordLabel.text = @"Waiting. . . ";
+    }
+    return cell;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    IncompleteLineCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IncompleteStoryLine"];
     return cell;
 }
 
 
 
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 50;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    if (![self.story myTurn])return 0;
+    return 60;
 }
 
 
@@ -117,18 +130,13 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==[self.story lineCount] && self.story.myTurn==YES){
-        //this is an editable story line cell
-        IncompleteLineCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IncompleteStoryLine"];
-        return cell;
-    }else{
-        //this is a completed story line cell
-        CompletedLineCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CompletedStoryLine"];
-        StoryLine *storyLine = [self.story storyLineAtIndex:indexPath.row];
-        cell.completeTextLabel.attributedText = [storyLine attributedText];
-        cell.numberLabel.text =[ NSString stringWithFormat:@"%ld",indexPath.row+1];
-        return cell;
+    if (indexPath.row==1){
+        return [[UITableViewCell alloc] init];
     }
+    
+    CompletedLineCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CompletedStoryLine"];
+    cell.completeTextLabel.attributedText = [self.story buildAttributedTextStory];
+    return cell;
 }
 
 
@@ -150,6 +158,7 @@
 - (void)keyboardWasShown:(NSNotification*)aNotification{
     NSLog(@"keybaord was show");
     UIScrollView *scrollView = self.tableView;
+
     
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
@@ -162,8 +171,12 @@
     // Your app might not need or want this behavior.
     CGRect aRect = self.tableView.frame;
     aRect.size.height -= kbSize.height;
+    
+    CGRect pos = [self.tableView rectForRowAtIndexPath:[self lastIndexPath]];
+    CGRect modPos = CGRectMake(pos.origin.x,pos.origin.y+20, pos.size.width, pos.size.height);
+    
     if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
-        [self.tableView scrollRectToVisible:[self.tableView rectForRowAtIndexPath:[self lastIndexPath]] animated:YES];
+        [self.tableView scrollRectToVisible:modPos animated:YES];
     }
 }
 
@@ -187,9 +200,6 @@
     self.activeField = textView;
     textView.text = @"";
 }
-
-
-
 
 
 @end
