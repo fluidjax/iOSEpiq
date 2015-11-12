@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "StoryViewController.h"
+#import "StoryListTableViewController.h"
 #import "Story.h"
 #import "StoryLine.h"
 #import "WordList.h"
@@ -16,7 +17,8 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *storyTitleTextField;
-@property (weak, nonatomic) IBOutlet UISwitch *howManyPlayersSwitch;
+
+@property (weak, nonatomic) IBOutlet UISegmentedControl *howManyPlayers;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
 @property QredoClient *qredoClient;
 
@@ -28,6 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.startButton.enabled=NO;
+    self.navigationController.navigationBarHidden=YES;
     
     [QredoClient authorizeWithConversationTypes:@[@"com.qredo.epiq"]
                                  vaultDataTypes:nil
@@ -60,9 +63,16 @@
         Story *story = [[Story alloc] initWithTitle:self.storyTitleTextField.text wordList:wordList];
         story.qredoClient = self.qredoClient;
         
-        story.onePlayerGame = [self.howManyPlayersSwitch isSelected];
+        if (self.howManyPlayers.selectedSegmentIndex==0)story.onePlayerGame = YES;
         [storyViewController setStory:story];
+    }else if ([[segue identifier] isEqualToString:@"HomeToStoryList"]){
+        StoryListTableViewController *storyListViewController = [segue destinationViewController];
+        storyListViewController.qredoClient = self.qredoClient;
     }
+    
+    
+    
+    
 }
 
 

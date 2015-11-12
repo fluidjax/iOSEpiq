@@ -23,6 +23,8 @@
 		83627B7C1BF380B30062AB4E /* Story.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B7B1BF380B30062AB4E /* Story.m */; };
 		83627B811BF396A50062AB4E /* wordlist.txt in Resources */ = {isa = PBXBuildFile; fileRef = 83627B801BF396A50062AB4E /* wordlist.txt */; };
 		83627B841BF396C30062AB4E /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B831BF396C30062AB4E /* WordList.m */; };
+		83627B871BF4F01F0062AB4E /* StoryListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B861BF4F01F0062AB4E /* StoryListTableViewController.m */; };
+		83627B8A1BF4F84E0062AB4E /* CompletedStoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,10 @@
 		83627B801BF396A50062AB4E /* wordlist.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wordlist.txt; sourceTree = "<group>"; };
 		83627B821BF396C30062AB4E /* WordList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordList.h; sourceTree = "<group>"; };
 		83627B831BF396C30062AB4E /* WordList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordList.m; sourceTree = "<group>"; };
+		83627B851BF4F01F0062AB4E /* StoryListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryListTableViewController.h; sourceTree = "<group>"; };
+		83627B861BF4F01F0062AB4E /* StoryListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryListTableViewController.m; sourceTree = "<group>"; };
+		83627B881BF4F84E0062AB4E /* CompletedStoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletedStoryViewController.h; sourceTree = "<group>"; };
+		83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompletedStoryViewController.m; sourceTree = "<group>"; };
 		C4487664E0109FB8DEC92BD7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		EC97E27AD648F544EF4E0089 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,6 +139,10 @@
 				83627B6A1BF357470062AB4E /* StoryViewController.h */,
 				83627B6B1BF357470062AB4E /* StoryViewController.m */,
 				83627B531BF352F50062AB4E /* LaunchScreen.storyboard */,
+				83627B851BF4F01F0062AB4E /* StoryListTableViewController.h */,
+				83627B861BF4F01F0062AB4E /* StoryListTableViewController.m */,
+				83627B881BF4F84E0062AB4E /* CompletedStoryViewController.h */,
+				83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */,
 			);
 			path = IOSEpiq;
 			sourceTree = "<group>";
@@ -343,6 +353,8 @@
 			files = (
 				83627B791BF3800A0062AB4E /* HeaderCell.m in Sources */,
 				83627B6C1BF357470062AB4E /* StoryViewController.m in Sources */,
+				83627B8A1BF4F84E0062AB4E /* CompletedStoryViewController.m in Sources */,
+				83627B871BF4F01F0062AB4E /* StoryListTableViewController.m in Sources */,
 				83627B761BF364F80062AB4E /* IncompleteLineCell.m in Sources */,
 				83627B7C1BF380B30062AB4E /* Story.m in Sources */,
 				83627B6F1BF358CD0062AB4E /* StoryLine.m in Sources */,

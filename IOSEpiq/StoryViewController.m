@@ -35,18 +35,29 @@
 
 
 -(void)viewDidLoad{
+    self.navigationController.navigationBarHidden=NO;
     [self registerForKeyboardNotifications];
     self.story.delegate = self;
-    [self.story createOrJoinRendezvous];
+    if (self.story.onePlayerGame==NO)[self.story createOrJoinRendezvous];
     self.tableView.estimatedRowHeight = 100;
-    self.storyTitle.text = self.story.title;
-    [self.tableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+    self.navigationItem.title = self.story.title;
+    self.navigationItem.leftBarButtonItem = nil;
+    
+    UIBarButtonItem *endStoryButton = [[UIBarButtonItem alloc] initWithTitle:@"End" style:UIBarButtonItemStylePlain
+                                                                     target:self action:@selector(endStory)];
+    self.navigationItem.rightBarButtonItem = endStoryButton;
+}
+
+
+-(void)endStory{
+    [self.story saveToVault];
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 
 - (IBAction)sendButtonPressed:(id)sender {
     NSString *textEntered = self.activeField.text;
-    
     
     if ([textEntered containsString:self.story.currentWord]){
         [self.story addNewStoryLine:textEntered forcedWord:self.story.currentWord];
@@ -55,7 +66,6 @@
         if ([self.story onePlayerGame]==YES){
             [self.activeField becomeFirstResponder];
         }
-        
     }else{
 //        NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
 //        

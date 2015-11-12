@@ -41,7 +41,7 @@
 -(StoryLine*)storyLineAtIndex:(long)index;
 -(long)lineCount;
 -(BOOL)myTurn;
-
+-(void)saveToVault;
 
 -(void)createOrJoinRendezvous;
 

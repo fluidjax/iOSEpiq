@@ -22,6 +22,30 @@
 @implementation Story
 
 
+-(void)saveToVault{
+    NSDictionary *item1SummaryValues = @{@"StoryTitle": self.title};
+    
+    QredoVaultItemMetadata *metadata =  [QredoVaultItemMetadata
+                                         vaultItemMetadataWithDataType :@"com.qredo.test"
+                                         accessLevel:0
+                                         summaryValues:item1SummaryValues];
+    
+    
+    
+    NSString *text = [[self buildAttributedTextStory] string];
+    
+    QredoVaultItem *item1 =[QredoVaultItem vaultItemWithMetadata:metadata value:[text dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    
+    [self.qredoClient.defaultVault putItem:item1 completionHandler:^(QredoVaultItemMetadata  *newVaultItemMetadata, NSError *error){
+         if (!error) {
+             NSLog(@"Story added to vault");
+             
+         }
+     }];
+
+}
+
 
 
 -(void)createOrJoinRendezvous{
@@ -218,7 +242,7 @@
 -(void)addNewStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord{
     StoryLine *storyLine = [[StoryLine alloc] initWithText:storyLineText forcedWord:forcedWord index:self.nextAvailableStoreLineIndex];
     self.nextAvailableStoreLineIndex++;
-    [self sendStoryLineToConversation:storyLine];
+    if ([self isTwoPlayerGame])[self sendStoryLineToConversation:storyLine];
     [self.storyLines addObject:storyLine];
     [self pickNewRandomWord];
 }
@@ -228,5 +252,8 @@
 }
 
 
+-(BOOL)isTwoPlayerGame{
+    return !self.onePlayerGame;
+}
 
 @end
