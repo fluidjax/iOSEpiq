@@ -40,18 +40,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbX-4D-PCB">
-                                <rect key="frame" x="332" y="380" width="128" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="1RX-Gp-h5K"/>
-                                </constraints>
-                                <state key="normal" title="Create / Join Story"/>
-                                <connections>
-                                    <segue destination="Dr5-3D-zp8" kind="show" identifier="HomeToStorySegue" id="Vpb-m9-tP1"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX3-bb-pz3">
-                                <rect key="frame" x="141" y="380" width="86" height="30"/>
+                                <rect key="frame" x="141" y="319" width="86" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="dzl-Yo-JUF"/>
                                 </constraints>
@@ -61,14 +51,14 @@
                                 </connections>
                             </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mPF-Np-jaa">
-                                <rect key="frame" x="299" y="316" width="161" height="29"/>
+                                <rect key="frame" x="299" y="260" width="161" height="29"/>
                                 <segments>
                                     <segment title="One Player"/>
                                     <segment title="Two Player"/>
                                 </segments>
                             </segmentedControl>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="enter your storyname" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="CoM-Ry-DLN">
-                                <rect key="frame" x="141" y="247" width="319" height="30"/>
+                                <rect key="frame" x="141" y="190" width="319" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="319" id="Tt1-Id-xnD"/>
                                 </constraints>
@@ -76,16 +66,26 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MbX-4D-PCB">
+                                <rect key="frame" x="332" y="319" width="128" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="1RX-Gp-h5K"/>
+                                </constraints>
+                                <state key="normal" title="Create / Join Story"/>
+                                <connections>
+                                    <segue destination="Dr5-3D-zp8" kind="show" identifier="HomeToStorySegue" id="Vpb-m9-tP1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="AX3-bb-pz3" firstAttribute="leading" secondItem="CoM-Ry-DLN" secondAttribute="leading" id="7KE-OI-rs3"/>
-                            <constraint firstItem="mPF-Np-jaa" firstAttribute="top" secondItem="CoM-Ry-DLN" secondAttribute="bottom" constant="39" id="9Tq-9Y-E76"/>
-                            <constraint firstItem="MbX-4D-PCB" firstAttribute="top" secondItem="mPF-Np-jaa" secondAttribute="bottom" constant="36" id="GTq-Ge-5Ky"/>
+                            <constraint firstItem="mPF-Np-jaa" firstAttribute="top" secondItem="CoM-Ry-DLN" secondAttribute="bottom" constant="40" id="9Tq-9Y-E76"/>
+                            <constraint firstItem="MbX-4D-PCB" firstAttribute="top" secondItem="mPF-Np-jaa" secondAttribute="bottom" constant="31" id="GTq-Ge-5Ky"/>
                             <constraint firstItem="MbX-4D-PCB" firstAttribute="trailing" secondItem="mPF-Np-jaa" secondAttribute="trailing" id="LCm-WI-Fxk"/>
                             <constraint firstItem="AX3-bb-pz3" firstAttribute="centerY" secondItem="MbX-4D-PCB" secondAttribute="centerY" id="Mu7-RE-suQ"/>
                             <constraint firstItem="K19-yC-SFK" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="RkK-5H-bCm"/>
-                            <constraint firstItem="CoM-Ry-DLN" firstAttribute="top" secondItem="K19-yC-SFK" secondAttribute="bottom" constant="85" id="WXe-1v-VcX"/>
+                            <constraint firstItem="CoM-Ry-DLN" firstAttribute="top" secondItem="K19-yC-SFK" secondAttribute="bottom" constant="28" id="WXe-1v-VcX"/>
                             <constraint firstItem="mPF-Np-jaa" firstAttribute="trailing" secondItem="CoM-Ry-DLN" secondAttribute="trailing" id="eFl-tt-zoq"/>
                             <constraint firstItem="K19-yC-SFK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="kie-rS-TgW"/>
                             <constraint firstItem="CoM-Ry-DLN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="tF5-jK-qFP"/>
