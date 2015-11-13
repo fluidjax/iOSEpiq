@@ -67,25 +67,25 @@
             [self.activeField becomeFirstResponder];
         }
     }else{
-//        NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
-//        
-//        UIAlertController * missingWordAlert=   [UIAlertController
-//                                      alertControllerWithTitle:@"Word Missing!"
-//                                      message:message
-//                                      preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction* ok = [UIAlertAction
-//                             actionWithTitle:@"OK"
-//                             style:UIAlertActionStyleDefault
-//                             handler:^(UIAlertAction * action)
-//                             {
-//                                 [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
-//                                 
-//                             }];
-//        [missingWordAlert addAction:ok];
-//        
-//        [self presentViewController:missingWordAlert animated:YES completion:nil];
-//        
+        NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
+        
+        UIAlertController * missingWordAlert=   [UIAlertController
+                                      alertControllerWithTitle:@"Word Missing!"
+                                      message:message
+                                      preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* ok = [UIAlertAction
+                             actionWithTitle:@"OK"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+        [missingWordAlert addAction:ok];
+        
+        [self presentViewController:missingWordAlert animated:YES completion:nil];
+        
     }
 }
 
@@ -106,9 +106,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     HeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HeaderCell"];
     if ([self.story myTurn]){
-        cell.currentWordLabel.text = self.story.currentWord;
+        cell.currentWordLabel.text = [NSString stringWithFormat:@"use word: %@",self.story.currentWord];
     }else{
-        cell.currentWordLabel.text = @"Waiting. . . ";
+        cell.currentWordLabel.text = @"Waiting for other player...";
     }
     return cell;
 }
@@ -164,27 +164,19 @@
     
 }
 
+
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification{
-    NSLog(@"keybaord was show");
     UIScrollView *scrollView = self.tableView;
-
-    
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     scrollView.contentInset = contentInsets;
     scrollView.scrollIndicatorInsets = contentInsets;
-    
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your app might not need or want this behavior.
     CGRect aRect = self.tableView.frame;
     aRect.size.height -= kbSize.height;
-    
     CGRect pos = [self.tableView rectForRowAtIndexPath:[self lastIndexPath]];
     CGRect modPos = CGRectMake(pos.origin.x,pos.origin.y+20, pos.size.width, pos.size.height);
-    
     if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {
         [self.tableView scrollRectToVisible:modPos animated:YES];
     }
