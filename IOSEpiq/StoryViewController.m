@@ -8,10 +8,6 @@
 
 #import "StoryViewController.h"
 #import "StoryLine.h"
-#import "CompletedLineCell.h"
-#import "IncompleteLineCell.h"
-#import "HeaderCell.h"
-
 #import "WordList.h"
 
 @interface StoryViewController ()
@@ -25,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *storyTextEntryView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backGroundBottomConstraint;
 
+@property (weak, nonatomic) IBOutlet UIView *textEntryBackgroundView;
 
 @property (weak, nonatomic) IBOutlet UILabel *forceWordLabel;
 @property (weak, nonatomic) IBOutlet UILabel *storyTextLabel;
@@ -36,6 +33,9 @@
 @implementation StoryViewController
 
 -(void)storyDidUpdate{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshScreen];
+    });
 }
 
 
@@ -47,14 +47,29 @@
     self.navigationItem.title = self.story.title;
     self.navigationItem.leftBarButtonItem = nil;
     UIBarButtonItem *endStoryButton = [[UIBarButtonItem alloc] initWithTitle:@"End" style:UIBarButtonItemStylePlain
-                                                                     target:self action:@selector(endStory)];
+                                                                      target:self action:@selector(endStory)];
     self.navigationItem.rightBarButtonItem = endStoryButton;
+    [self refreshScreen];
 }
 
 
 -(void)endStory{
     [self.story saveToVault];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)refreshScreen{
+    self.forceWordLabel.text = self.story.currentWord;
+    self.storyTextLabel.attributedText = [self.story buildAttributedTextStory];
+    self.storyTextEntryView.text = @"";
+    
+    if ([self.story myTurn]){
+        self.forceWordLabel.text = self.story.currentWord;
+        self.textEntryBackgroundView.hidden=NO;
+    }else{
+        self.forceWordLabel.text = @"Waiting. . . ";
+        self.textEntryBackgroundView.hidden=YES;
+    }
     
 }
 
@@ -68,6 +83,7 @@
         if ([self.story onePlayerGame]==YES){
             [self.storyTextEntryView becomeFirstResponder];
         }
+        [self refreshScreen];
     }else{
         NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
         
@@ -109,38 +125,13 @@
 
 
 - (void)keyboardWillShow:(NSNotification*)aNotification{
-    
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
- 
     self.backGroundBottomConstraint.constant =kbSize.height;
-    
-//    [self.backGroundScrollView setContentOffset:CGPointMake(0,kbSize.height) animated:YES];
-//
-//
-//    [self.storyScrollView setContentOffset:CGPointMake(0,-kbSize.height) animated:YES];
-    
-
-    
-    
-//    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-//    scrollView.contentInset = contentInsets;
-//    scrollView.scrollIndicatorInsets = contentInsets;
-//    
-//    // If active text field is hidden by keyboard, scroll it so it's visible
-//    // Your app might not need or want this behavior.
-//    CGRect aRect = scrollView.frame;
-//    aRect.size.height -= kbSize.height;
 }
 
-// Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification{
-  //  UIScrollView *scrollView = self.backGroundScrollView;
-//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//    scrollView.contentInset = contentInsets;
-//    scrollView.scrollIndicatorInsets = contentInsets;
+    self.backGroundBottomConstraint.constant =0;
 }
-
 
 @end

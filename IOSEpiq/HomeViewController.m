@@ -6,7 +6,7 @@
 //  Copyright © 2015 Christopher Morris. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "HomeViewController.h"
 #import "StoryViewController.h"
 #import "StoryListTableViewController.h"
 #import "Story.h"
@@ -15,7 +15,7 @@
 #import "Qredo.h"
 
 
-@interface ViewController ()
+@interface HomeViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *storyTitleTextField;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *howManyPlayers;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation ViewController
+@implementation HomeViewController
 
 
 - (void)viewDidLoad {

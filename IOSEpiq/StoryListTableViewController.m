@@ -26,7 +26,6 @@
 }
 
 
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
     if ([[segue identifier] isEqualToString:@"StoryListToStoryView"]){
@@ -55,25 +54,15 @@
 }
 
 
-
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
     QredoVaultItemMetadata *vaultItemMetadata = [self.storyList objectAtIndex:indexPath.row];
-    
     cell.textLabel.text = vaultItemMetadata.summaryValues[@"StoryTitle"];
-//    cell.detailTextLabel.text = @"More text";
-//    cell.imageView.image = [UIImage imageNamed:@"flower.png"];
-    
-    // set the accessory view:
     cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
-    
     return cell;
 }
 

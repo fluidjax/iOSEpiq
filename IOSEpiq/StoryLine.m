@@ -11,7 +11,6 @@
 @implementation StoryLine
 
 
-
 -(instancetype)initWithText:(NSString*)text forcedWord:(NSString*)forcedWord index:(int)index{
     self = [super init];
     if (self) {
@@ -26,12 +25,6 @@
 
 -(NSAttributedString*)attributedText{
    NSMutableAttributedString *attrText = [[NSMutableAttributedString alloc]initWithString:self.text];
-    
-
-    
-    
-   //add color
-    
    NSRange searchRange = NSMakeRange(0,self.text.length);
    NSRange foundRange;
    while (searchRange.location < self.text.length) {
@@ -45,9 +38,7 @@
            break;
        }
    }
-    
-    
-    return attrText;
+   return attrText;
 }
 
 

@@ -22,10 +22,10 @@
             </objects>
             <point key="canvasLocation" x="-683" y="275"/>
         </scene>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -47,7 +47,7 @@
                                 </constraints>
                                 <state key="normal" title="Create / Join Story"/>
                                 <connections>
-                                    <segue destination="Dr5-3D-zp8" kind="show" id="Vpb-m9-tP1"/>
+                                    <segue destination="Dr5-3D-zp8" kind="show" identifier="HomeToStorySegue" id="Vpb-m9-tP1"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX3-bb-pz3">
@@ -152,12 +152,12 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lux-7h-PQs">
                                         <rect key="frame" x="8" y="0.0" width="584" height="50"/>
-                                        <color key="backgroundColor" red="0.61158317819999997" green="1" blue="0.63453469110000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="OwT-AK-c8j"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QqW-1R-f9G">
@@ -175,15 +175,22 @@
                                             </button>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mbp-dp-AY6">
                                                 <rect key="frame" x="8" y="8" width="501" height="112"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="backgroundColor" red="0.51772994841038089" green="0.62227400302126457" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="layer.borderWidth" value="0"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="delegate" destination="Dr5-3D-zp8" id="zNz-iQ-QTh"/>
                                                 </connections>
                                             </textView>
                                         </subviews>
-                                        <color key="backgroundColor" red="1" green="0.53147274154826163" blue="0.53013772278605809" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="128" id="L8P-uT-63Q"/>
                                             <constraint firstItem="mbp-dp-AY6" firstAttribute="top" secondItem="QqW-1R-f9G" secondAttribute="top" constant="8" id="Nog-7f-NnN"/>
@@ -195,11 +202,11 @@
                                             <constraint firstAttribute="trailing" secondItem="lqZ-4y-Oie" secondAttribute="trailing" constant="8" id="pPY-TN-yYI"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="500" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-JM-hT0">
-                                        <rect key="frame" x="8" y="54" width="584" height="366"/>
-                                        <color key="backgroundColor" red="1" green="0.91753542020000001" blue="0.93709361920000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="500" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-JM-hT0">
+                                        <rect key="frame" x="8" y="58" width="584" height="366"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -233,6 +240,7 @@
                         <outlet property="forceWordLabel" destination="Lux-7h-PQs" id="Q8Z-gm-mk4"/>
                         <outlet property="storyTextEntryView" destination="mbp-dp-AY6" id="pv3-bA-oHL"/>
                         <outlet property="storyTextLabel" destination="Koq-JM-hT0" id="YrG-34-RXy"/>
+                        <outlet property="textEntryBackgroundView" destination="QqW-1R-f9G" id="I87-NX-VME"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nan-Ci-gGQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

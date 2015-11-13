@@ -24,26 +24,15 @@
 
 -(void)saveToVault{
     NSDictionary *item1SummaryValues = @{@"StoryTitle": self.title};
-    
-    QredoVaultItemMetadata *metadata =  [QredoVaultItemMetadata
-                                         vaultItemMetadataWithDataType :@"com.qredo.test"
-                                         accessLevel:0
-                                         summaryValues:item1SummaryValues];
-    
-    
-    
     NSString *text = [[self buildAttributedTextStory] string];
+    QredoVaultItemMetadata *metadata =  [QredoVaultItemMetadata vaultItemMetadataWithDataType :@"com.qredo.test" accessLevel:0 summaryValues:item1SummaryValues];
     
     QredoVaultItem *item1 =[QredoVaultItem vaultItemWithMetadata:metadata value:[text dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    
     [self.qredoClient.defaultVault putItem:item1 completionHandler:^(QredoVaultItemMetadata  *newVaultItemMetadata, NSError *error){
          if (!error) {
              NSLog(@"Story added to vault");
-             
          }
      }];
-
 }
 
 
@@ -51,7 +40,6 @@
 -(void)createOrJoinRendezvous{
     //Player A, creates a new rendezvous, Player B fails to create and fallsback to joining
     //a existing Rendezvous
-    
     
     QredoRendezvousConfiguration *rendezvousConfiguration =
     [[QredoRendezvousConfiguration alloc] initWithConversationType: @"com.qredo.epiq"
@@ -82,9 +70,6 @@
 }
 
 
-
-
-
 -(void)joinRendezvous{
     //Player B joins an existing Rendezvous
     [self.qredoClient respondWithTag:[self santizedStoryName]
@@ -111,24 +96,20 @@
     }
     
     NSDate *currentDateTime = [NSDate date];
-    
     NSDictionary *messageSummaryValues = @{@"index": [NSNumber numberWithInt:storyLine.index],
                                            @"word": storyLine.forcedWord,
                                            @"date": currentDateTime};
-    QredoConversationMessage *conversationMessage = [[QredoConversationMessage alloc] initWithValue:
-                                                            [storyLine.text dataUsingEncoding:NSUTF8StringEncoding]
-     dataType: @"com.qredo.plaintext"
-     summaryValues: messageSummaryValues];
+    QredoConversationMessage *conversationMessage = [[QredoConversationMessage alloc] initWithValue:[storyLine.text dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                           dataType: @"com.qredo.plaintext"
+                                                                                      summaryValues: messageSummaryValues];
     
-    if (conversationMessage)    {
-        [self.conversation publishMessage: conversationMessage
-                   completionHandler: ^(QredoConversationHighWatermark *messageHighWatermark, NSError *error) {
-                       if (error){
-                           NSLog(@"Posting message failed with error: %@", error.localizedDescription);
-                       }
-                       NSLog(@"Posted message: %@",storyLine.text);
-                   }
-         ];
+    if (conversationMessage){
+        [self.conversation publishMessage: conversationMessage completionHandler: ^(QredoConversationHighWatermark *messageHighWatermark, NSError *error) {
+            if (error){
+                NSLog(@"Posting message failed with error: %@", error.localizedDescription);
+            }
+            NSLog(@"Posted message: %@",storyLine.text);
+        }];
     }
 }
 
@@ -151,12 +132,9 @@
     NSString *storyLineText = [[NSString alloc] initWithData: message.value encoding: NSUTF8StringEncoding];
     NSString *forcedWord    = summaryVaules[@"word"];
     int index               = [summaryVaules[@"index"] intValue];
-    
     [self addRemoteStoryLine:storyLineText forcedWord:forcedWord index:index];
-    
     [self.delegate storyDidUpdate];
 }
-
 
 
 #pragma Private Methods
@@ -182,7 +160,6 @@
         self.storyLines = [[NSMutableArray alloc] init];
         [self startNewStory];
         self.nextAvailableStoreLineIndex = 0;
-//        [self buildTestStory];
     }
     return self;
 }
@@ -229,7 +206,6 @@
 -(void)pickNewRandomWord{
     self.currentWord = [self.wordList getRandomWord];
 }
-
 
      
 -(void)addRemoteStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord index:(int)index{
