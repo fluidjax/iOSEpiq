@@ -32,13 +32,11 @@
     self.startButton.enabled=NO;
     self.navigationController.navigationBarHidden=YES;
     
-    [QredoClient authorizeWithConversationTypes:@[@"com.qredo.epiq"]
-                                 vaultDataTypes:nil
-                                      appSecret:@"appSecret"
-                                         userId:@"userId"
-                                     userSecret:@"userSecret"
-                                        options:nil
-                              completionHandler:^(QredoClient *clientArg, NSError *error) {
+    
+    [QredoClient initializeWithAppSecret:@"appSecret"
+                                  userId:@"userId"
+                              userSecret:@"userSecret"
+                       completionHandler:^(QredoClient *clientArg, NSError *error) {
                                   // handle error, store client in property
                                   if (error)                                  {
                                       NSLog(@"Authorize failed with error: %@", error.localizedDescription);

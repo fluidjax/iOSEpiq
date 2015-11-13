@@ -12,7 +12,7 @@
 @class Story;
 @class WordList;
 
-@interface StoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate,StoryProtocol >
+@interface StoryViewController : UIViewController <UITextViewDelegate,StoryProtocol >
 @property (strong) Story *story;
 
 
