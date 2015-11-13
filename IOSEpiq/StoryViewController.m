@@ -77,7 +77,8 @@
 - (IBAction)sendButtonPressed:(id)sender {
     NSString *textEntered = self.storyTextEntryView.text;
     
-    if ([textEntered containsString:self.story.currentWord]){
+    
+    if ([textEntered rangeOfString:self.story.currentWord options:NSCaseInsensitiveSearch].location != NSNotFound){
         [self.story addNewStoryLine:textEntered forcedWord:self.story.currentWord];
         
         if ([self.story onePlayerGame]==YES){
