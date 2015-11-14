@@ -38,8 +38,8 @@
 
 
 -(void)createOrJoinRendezvous{
-    //Player A, creates a new rendezvous, Player B fails to create and fallsback to joining
-    //a existing Rendezvous
+    //Player A creates a new rendezvous
+    //Player B will fail to create because if already exsitis, and so falls back to joining an existing Rendezvous
     
     QredoRendezvousConfiguration *rendezvousConfiguration =
     [[QredoRendezvousConfiguration alloc] initWithConversationType: @"com.qredo.epiq"
@@ -91,7 +91,7 @@
 -(void)sendStoryLineToConversation:(StoryLine*)storyLine{
     //Send a storyLine if we have a conversation
     if (!self.conversation){
-        NSLog(@"Failed to send StoryLine no conversation available yet");
+        NSLog(@"Player 2 has not connected yet - waiting for connection before sending storyline");
         return;
     }
     
@@ -111,6 +111,10 @@
             NSLog(@"Posted message: %@",storyLine.text);
         }];
     }
+}
+
+-(void)prepareQredoConnections{
+     if (self.onePlayerGame==NO)[self createOrJoinRendezvous];
 }
 
 #pragma QredoRendezvousObserver methods

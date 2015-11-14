@@ -22,6 +22,7 @@
 		83627B841BF396C30062AB4E /* WordList.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B831BF396C30062AB4E /* WordList.m */; };
 		83627B871BF4F01F0062AB4E /* StoryListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B861BF4F01F0062AB4E /* StoryListTableViewController.m */; };
 		83627B8A1BF4F84E0062AB4E /* CompletedStoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */; };
+		839D94DB1BF71A2B0093BB99 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 839D94DA1BF71A2B0093BB99 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		83627B861BF4F01F0062AB4E /* StoryListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryListTableViewController.m; sourceTree = "<group>"; };
 		83627B881BF4F84E0062AB4E /* CompletedStoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletedStoryViewController.h; sourceTree = "<group>"; };
 		83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompletedStoryViewController.m; sourceTree = "<group>"; };
+		839D94DA1BF71A2B0093BB99 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		C4487664E0109FB8DEC92BD7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		EC97E27AD648F544EF4E0089 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,6 +125,7 @@
 				83627B491BF352F50062AB4E /* AppDelegate.m */,
 				83627B4E1BF352F50062AB4E /* Main.storyboard */,
 				83627B511BF352F50062AB4E /* Assets.xcassets */,
+				839D94DA1BF71A2B0093BB99 /* Media.xcassets */,
 				83627B561BF352F50062AB4E /* Info.plist */,
 				83627B451BF352F50062AB4E /* Supporting Files */,
 				83627B531BF352F50062AB4E /* LaunchScreen.storyboard */,
@@ -236,6 +239,7 @@
 				TargetAttributes = {
 					83627B411BF352F50062AB4E = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 9W2U485A5G;
 					};
 					83627B5A1BF352F50062AB4E = {
 						CreatedOnToolsVersion = 7.1;
@@ -267,6 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				839D94DB1BF71A2B0093BB99 /* Media.xcassets in Resources */,
 				83627B551BF352F50062AB4E /* LaunchScreen.storyboard in Resources */,
 				83627B521BF352F50062AB4E /* Assets.xcassets in Resources */,
 				83627B811BF396A50062AB4E /* wordlist.txt in Resources */,
@@ -473,11 +478,14 @@
 			baseConfigurationReference = EC97E27AD648F544EF4E0089 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IOSEpiq/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qredo.IOSEpiq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -486,11 +494,14 @@
 			baseConfigurationReference = C4487664E0109FB8DEC92BD7 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = IOSEpiq/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qredo.IOSEpiq;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

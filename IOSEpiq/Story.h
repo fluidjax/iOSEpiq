@@ -42,7 +42,7 @@
 -(long)lineCount;
 -(BOOL)myTurn;
 -(void)saveToVault;
-
+-(void)prepareQredoConnections;
 -(void)createOrJoinRendezvous;
 
 @end

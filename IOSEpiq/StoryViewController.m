@@ -24,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *textEntryBackgroundView;
 
 @property (weak, nonatomic) IBOutlet UILabel *forceWordLabel;
-@property (weak, nonatomic) IBOutlet UILabel *storyTextLabel;
+@property (weak, nonatomic) IBOutlet UITextView *storyViewTextView;
 
 
 
@@ -42,14 +42,29 @@
 -(void)viewDidLoad{
     self.navigationController.navigationBarHidden=NO;
     [self registerForKeyboardNotifications];
+    
     self.story.delegate = self;
-    if (self.story.onePlayerGame==NO)[self.story createOrJoinRendezvous];
+    [self.story prepareQredoConnections]; //if 2 player, initializae the rendezvous
+   
     self.navigationItem.title = self.story.title;
     self.navigationItem.leftBarButtonItem = nil;
     UIBarButtonItem *endStoryButton = [[UIBarButtonItem alloc] initWithTitle:@"End" style:UIBarButtonItemStylePlain
                                                                       target:self action:@selector(endStory)];
     self.navigationItem.rightBarButtonItem = endStoryButton;
     [self refreshScreen];
+}
+
+
+- (IBAction)sendButtonPressed:(id)sender {
+    NSString *textEntered = self.storyTextEntryView.text;
+    
+    if ([self wordHasBeenUsed]){
+        [self.story addNewStoryLine:textEntered forcedWord:self.story.currentWord];
+        [self refreshScreen];
+    }else{
+        [self showWordNotUsedAlert];
+        
+    }
 }
 
 
@@ -60,55 +75,57 @@
 
 -(void)refreshScreen{
     self.forceWordLabel.text = self.story.currentWord;
-    self.storyTextLabel.attributedText = [self.story buildAttributedTextStory];
+    self.storyViewTextView.attributedText = [self.story buildAttributedTextStory];
     self.storyTextEntryView.text = @"";
     
     if ([self.story myTurn]){
         self.forceWordLabel.text = self.story.currentWord;
         self.textEntryBackgroundView.hidden=NO;
+        [self.storyTextEntryView becomeFirstResponder];
     }else{
         self.forceWordLabel.text = @"Waiting. . . ";
         self.textEntryBackgroundView.hidden=YES;
     }
     
+    [self scrollToTheEndOfTheStoryView];
+    
+}
+
+-(void)scrollToTheEndOfTheStoryView{
+    NSRange range = NSMakeRange(self.storyViewTextView.text.length - 1, 1);
+    [self.storyViewTextView scrollRangeToVisible:range];
 }
 
 
-- (IBAction)sendButtonPressed:(id)sender {
+-(BOOL)wordHasBeenUsed{
     NSString *textEntered = self.storyTextEntryView.text;
+    return [textEntered rangeOfString:self.story.currentWord options:NSCaseInsensitiveSearch].location != NSNotFound;
     
-    
-    if ([textEntered rangeOfString:self.story.currentWord options:NSCaseInsensitiveSearch].location != NSNotFound){
-        [self.story addNewStoryLine:textEntered forcedWord:self.story.currentWord];
-        
-        if ([self.story onePlayerGame]==YES){
-            [self.storyTextEntryView becomeFirstResponder];
-        }
-        [self refreshScreen];
-    }else{
-        NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
-        
-        UIAlertController * missingWordAlert=   [UIAlertController
-                                      alertControllerWithTitle:@"Word Missing!"
-                                      message:message
-                                      preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* ok = [UIAlertAction
-                             actionWithTitle:@"OK"
-                             style:UIAlertActionStyleDefault
-                             handler:^(UIAlertAction * action)
-                             {
-                                 [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
-                                 
-                             }];
-        [missingWordAlert addAction:ok];
-        
-        [self presentViewController:missingWordAlert animated:YES completion:nil];
-        
-    }
 }
 
 
+
+
+-(void)showWordNotUsedAlert{
+    NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
+    
+    UIAlertController * missingWordAlert=   [UIAlertController
+                                             alertControllerWithTitle:@"Word Missing!"
+                                             message:message
+                                             preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* ok = [UIAlertAction
+                         actionWithTitle:@"OK"
+                         style:UIAlertActionStyleDefault
+                         handler:^(UIAlertAction * action)
+                         {
+                             [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
+                             
+                         }];
+    [missingWordAlert addAction:ok];
+    
+    [self presentViewController:missingWordAlert animated:YES completion:nil];
+}
 
 
 #pragma Handle Keyboard Display/Hide

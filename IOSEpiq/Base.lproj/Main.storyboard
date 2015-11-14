@@ -202,26 +202,26 @@
                                             <constraint firstAttribute="trailing" secondItem="lqZ-4y-Oie" secondAttribute="trailing" constant="8" id="pPY-TN-yYI"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="500" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-JM-hT0">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="n1t-CV-mpc">
                                         <rect key="frame" x="8" y="58" width="584" height="366"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="n1t-CV-mpc" firstAttribute="top" secondItem="Lux-7h-PQs" secondAttribute="bottom" constant="8" id="1on-RS-ooB"/>
                                     <constraint firstItem="QqW-1R-f9G" firstAttribute="leading" secondItem="OMj-eI-BsO" secondAttribute="leading" constant="8" id="4PR-GN-4AH"/>
+                                    <constraint firstAttribute="trailing" secondItem="n1t-CV-mpc" secondAttribute="trailing" constant="8" id="6zH-9G-mPY"/>
                                     <constraint firstItem="Lux-7h-PQs" firstAttribute="top" secondItem="OMj-eI-BsO" secondAttribute="top" id="7Ow-1c-lnq"/>
                                     <constraint firstAttribute="trailing" secondItem="QqW-1R-f9G" secondAttribute="trailing" constant="8" id="8ix-gk-rbs"/>
-                                    <constraint firstItem="Koq-JM-hT0" firstAttribute="top" secondItem="Lux-7h-PQs" secondAttribute="bottom" constant="8" id="PVR-mt-4VO"/>
+                                    <constraint firstItem="QqW-1R-f9G" firstAttribute="top" secondItem="n1t-CV-mpc" secondAttribute="bottom" constant="4" id="Cgj-TD-coY"/>
                                     <constraint firstAttribute="trailing" secondItem="Lux-7h-PQs" secondAttribute="trailing" constant="8" id="Xm5-vJ-qwp"/>
-                                    <constraint firstItem="Koq-JM-hT0" firstAttribute="leading" secondItem="OMj-eI-BsO" secondAttribute="leading" constant="8" id="YZi-z7-gIP"/>
-                                    <constraint firstAttribute="trailing" secondItem="Koq-JM-hT0" secondAttribute="trailing" constant="8" id="gGc-FV-Xhx"/>
                                     <constraint firstAttribute="bottom" secondItem="QqW-1R-f9G" secondAttribute="bottom" id="hgY-01-IGb"/>
+                                    <constraint firstItem="n1t-CV-mpc" firstAttribute="leading" secondItem="OMj-eI-BsO" secondAttribute="leading" constant="8" id="iQ3-Nq-DDE"/>
                                     <constraint firstItem="Lux-7h-PQs" firstAttribute="leading" secondItem="OMj-eI-BsO" secondAttribute="leading" constant="8" id="lJ5-nv-rav"/>
-                                    <constraint firstItem="QqW-1R-f9G" firstAttribute="top" secondItem="Koq-JM-hT0" secondAttribute="bottom" constant="4" id="m4q-1U-EWE"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -239,7 +239,7 @@
                         <outlet property="backgroundView" destination="OMj-eI-BsO" id="TuD-jv-Uew"/>
                         <outlet property="forceWordLabel" destination="Lux-7h-PQs" id="Q8Z-gm-mk4"/>
                         <outlet property="storyTextEntryView" destination="mbp-dp-AY6" id="pv3-bA-oHL"/>
-                        <outlet property="storyTextLabel" destination="Koq-JM-hT0" id="YrG-34-RXy"/>
+                        <outlet property="storyViewTextView" destination="n1t-CV-mpc" id="Crv-Wv-IfV"/>
                         <outlet property="textEntryBackgroundView" destination="QqW-1R-f9G" id="I87-NX-VME"/>
                     </connections>
                 </viewController>
