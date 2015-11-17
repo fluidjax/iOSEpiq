@@ -30,12 +30,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.startButton.enabled=NO;
+    self.navigationItem.leftBarButtonItem=nil;
     self.navigationController.navigationBarHidden=YES;
-    
+
+    QredoClientOptions *clientOptions = [[QredoClientOptions alloc] initDefaultPinnnedCertificate];
+    if (self.firstRun==YES){
+        clientOptions.resetData = YES;
+    }else{
+        clientOptions.resetData = NO;
+    }
     
     [QredoClient initializeWithAppSecret:@"appSecret"
-                                  userId:@"userId"
-                              userSecret:@"userSecret"
+                                  userId:self.username
+                                userSecret:self.password
+                                 options:clientOptions
                        completionHandler:^(QredoClient *clientArg, NSError *error) {
                                   // handle error, store client in property
                                   if (error)                                  {
@@ -45,9 +53,6 @@
                                   self.qredoClient = clientArg;
                                   self.startButton.enabled=YES;
                               }];
-    
-    
-    
 }
 
 
@@ -67,29 +72,18 @@
         StoryListTableViewController *storyListViewController = [segue destinationViewController];
         storyListViewController.qredoClient = self.qredoClient;
     }
-    
-    
-    
-    
 }
 
 
 -(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender{
-    if ([self.storyTitleTextField.text isEqualToString:@""])return NO;
+    if ([identifier isEqualToString:@"HomeToStorySegue"] && [self.storyTitleTextField.text isEqualToString:@""])return NO;
     return YES;
-    
 }
-
-
 
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
-
 
 @end

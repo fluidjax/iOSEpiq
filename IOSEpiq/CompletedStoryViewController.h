@@ -15,5 +15,4 @@
 @property(strong) QredoVaultItemMetadata *vaultItemMetadata;
 @property(strong) QredoClient *qredoClient;
 
-
 @end

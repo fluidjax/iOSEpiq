@@ -23,6 +23,7 @@
 		83627B871BF4F01F0062AB4E /* StoryListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B861BF4F01F0062AB4E /* StoryListTableViewController.m */; };
 		83627B8A1BF4F84E0062AB4E /* CompletedStoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */; };
 		839D94DB1BF71A2B0093BB99 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 839D94DA1BF71A2B0093BB99 /* Media.xcassets */; };
+		83B600AA1BF9DECC003A3FCB /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B600A91BF9DECC003A3FCB /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,8 @@
 		83627B881BF4F84E0062AB4E /* CompletedStoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompletedStoryViewController.h; sourceTree = "<group>"; };
 		83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompletedStoryViewController.m; sourceTree = "<group>"; };
 		839D94DA1BF71A2B0093BB99 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		83B600A81BF9DECC003A3FCB /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		83B600A91BF9DECC003A3FCB /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		C4487664E0109FB8DEC92BD7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		EC97E27AD648F544EF4E0089 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -174,6 +177,8 @@
 				83627B891BF4F84E0062AB4E /* CompletedStoryViewController.m */,
 				83627B4B1BF352F50062AB4E /* HomeViewController.h */,
 				83627B4C1BF352F50062AB4E /* HomeViewController.m */,
+				83B600A81BF9DECC003A3FCB /* LoginViewController.h */,
+				83B600A91BF9DECC003A3FCB /* LoginViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 				83627B8A1BF4F84E0062AB4E /* CompletedStoryViewController.m in Sources */,
 				83627B871BF4F01F0062AB4E /* StoryListTableViewController.m in Sources */,
 				83627B7C1BF380B30062AB4E /* Story.m in Sources */,
+				83B600AA1BF9DECC003A3FCB /* LoginViewController.m in Sources */,
 				83627B6F1BF358CD0062AB4E /* StoryLine.m in Sources */,
 				83627B4D1BF352F50062AB4E /* HomeViewController.m in Sources */,
 				83627B4A1BF352F50062AB4E /* AppDelegate.m in Sources */,

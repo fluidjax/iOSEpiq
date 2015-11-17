@@ -40,16 +40,16 @@
 
 
 -(void)viewDidLoad{
+    [super viewDidLoad];
     self.navigationController.navigationBarHidden=NO;
     [self registerForKeyboardNotifications];
-    
     self.story.delegate = self;
-    [self.story prepareQredoConnections]; //if 2 player, initializae the rendezvous
-   
+    [self.story prepareQredoConnections];
+    
     self.navigationItem.title = self.story.title;
     self.navigationItem.leftBarButtonItem = nil;
     UIBarButtonItem *endStoryButton = [[UIBarButtonItem alloc] initWithTitle:@"End" style:UIBarButtonItemStylePlain
-                                                                      target:self action:@selector(endStory)];
+                                                                      target:self action:@selector(endStoryPressed)];
     self.navigationItem.rightBarButtonItem = endStoryButton;
     [self refreshScreen];
 }
@@ -59,7 +59,7 @@
     NSString *textEntered = self.storyTextEntryView.text;
     
     if ([self wordHasBeenUsed]){
-        [self.story addNewStoryLine:textEntered forcedWord:self.story.currentWord];
+        [self.story addNewLocallyEnteredStoryLine:textEntered forcedWord:self.story.currentWord];
         [self refreshScreen];
     }else{
         [self showWordNotUsedAlert];
@@ -67,29 +67,47 @@
     }
 }
 
-
--(void)endStory{
-    [self.story saveToVault];
-    [self.navigationController popViewControllerAnimated:YES];
+-(void)endStoryPressed{
+    [self.story sendEndStoryMessage];
+    [self storyDidUpdate];
 }
 
+
 -(void)refreshScreen{
-    self.forceWordLabel.text = self.story.currentWord;
     self.storyViewTextView.attributedText = [self.story buildAttributedTextStory];
-    self.storyTextEntryView.text = @"";
     
-    if ([self.story myTurn]){
-        self.forceWordLabel.text = self.story.currentWord;
-        self.textEntryBackgroundView.hidden=NO;
-        [self.storyTextEntryView becomeFirstResponder];
-    }else{
-        self.forceWordLabel.text = @"Waiting. . . ";
+    if (self.story.storyEnded==YES) {
+        self.forceWordLabel.text = @"Story Complete";
         self.textEntryBackgroundView.hidden=YES;
+        [self.story saveToVault];
+        self.navigationItem.rightBarButtonItem = nil;
+    }else{
+        self.forceWordLabel.text = self.story.currentWord;
+        self.storyTextEntryView.text = @"";
+        
+        if ([self.story isMyTurn]){
+            self.forceWordLabel.text = self.story.currentWord;
+            self.navigationItem.rightBarButtonItem.enabled=YES;
+            self.textEntryBackgroundView.hidden=NO;
+            [self.storyTextEntryView becomeFirstResponder];
+        }else{
+            self.forceWordLabel.text = @"Waiting. . . ";
+            self.navigationItem.rightBarButtonItem.enabled=NO;
+            self.textEntryBackgroundView.hidden=YES;
+        }
     }
-    
     [self scrollToTheEndOfTheStoryView];
     
 }
+
+
+-(void)checkForEndOfStory{
+    if (self.story.storyEnded==YES){
+        self.textEntryBackgroundView.hidden=YES;
+        [self.story saveToVault];
+    }
+}
+
 
 -(void)scrollToTheEndOfTheStoryView{
     NSRange range = NSMakeRange(self.storyViewTextView.text.length - 1, 1);
@@ -104,8 +122,6 @@
 }
 
 
-
-
 -(void)showWordNotUsedAlert{
     NSString *message = [NSString stringWithFormat:@"The line of your story must\n include the word '%@'",self.story.currentWord];
     
@@ -113,7 +129,6 @@
                                              alertControllerWithTitle:@"Word Missing!"
                                              message:message
                                              preferredStyle:UIAlertControllerStyleAlert];
-    
     UIAlertAction* ok = [UIAlertAction
                          actionWithTitle:@"OK"
                          style:UIAlertActionStyleDefault

@@ -16,7 +16,6 @@
 @protocol StoryProtocol
 @required
 -(void)storyDidUpdate;
-
 @end
 
 
@@ -29,6 +28,7 @@
 @property(strong) WordList *wordList;
 @property(strong) NSString *currentWord;
 @property(assign) BOOL onePlayerGame;
+@property(assign) BOOL storyEnded;
 @property(assign) int nextAvailableStoreLineIndex;
 @property QredoClient *qredoClient;
 @property(strong) id<StoryProtocol> delegate;
@@ -37,12 +37,13 @@
 -(instancetype)initWithTitle:(NSString*)title wordList:(WordList*)wordList;
 
 -(NSMutableAttributedString*)buildAttributedTextStory;
--(void)addNewStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord;
+-(void)addNewLocallyEnteredStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord;
 -(StoryLine*)storyLineAtIndex:(long)index;
 -(long)lineCount;
--(BOOL)myTurn;
+-(BOOL)isMyTurn;
 -(void)saveToVault;
 -(void)prepareQredoConnections;
 -(void)createOrJoinRendezvous;
+-(void)sendEndStoryMessage;
 
 @end

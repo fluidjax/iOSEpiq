@@ -9,13 +9,11 @@
 #import "CompletedStoryViewController.h"
 
 @interface CompletedStoryViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *storyTextLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UITextView *storyTextView;
 @end
 
 @implementation CompletedStoryViewController
-
-
 
 
 -(void)viewDidLoad{
@@ -32,15 +30,17 @@
                                            }else{
                                                NSLog(@"Error retrieving the vault item");
                                            }
-                                           
                                        }];
 }
 
 
 
 -(void)displayStory:(QredoVaultItem *)vaultItem{
-    self.storyTextLabel.text = [[NSString alloc] initWithData:vaultItem.value encoding: NSUTF8StringEncoding];
-    self.titleLabel.text = vaultItem.metadata.summaryValues[@"StoryTitle"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.storyTextView.text = [[NSString alloc] initWithData:vaultItem.value encoding: NSUTF8StringEncoding];
+        self.titleLabel.text = vaultItem.metadata.summaryValues[@"StoryTitle"];
+
+    });
 }
 
 @end

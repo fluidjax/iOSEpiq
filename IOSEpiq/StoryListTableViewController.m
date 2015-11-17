@@ -19,6 +19,7 @@
 
 
 -(void)viewDidLoad{
+    [super viewDidLoad];
     self.navigationController.navigationBarHidden=NO;
     self.storyList = [[NSMutableArray alloc] init];
     self.navigationItem.title = @"Completed Stories";
