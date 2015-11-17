@@ -22,6 +22,9 @@
 @implementation Story
 
 
+#pragma mark -
+#pragma mark Public Methods
+
 - (instancetype)initWithTitle:(NSString*)title wordList:(WordList*)wordList{
     self = [super init];
     if (self) {
@@ -36,21 +39,52 @@
 }
 
 
+-(void)prepareQredoConnections{
+    if (self.onePlayerGame==NO)[self createOrJoinRendezvous];
+}
 
 
--(void)updateStoryWithAllReceivedMessages{
-    [self.conversation enumerateReceivedMessagesUsingBlock:^(QredoConversationMessage *message, BOOL *stop) {
-        NSDictionary *summaryVaules = message.summaryValues;
-        NSString *storyLineText = [[NSString alloc] initWithData: message.value encoding: NSUTF8StringEncoding];
-        NSString *forcedWord    = summaryVaules[@"word"];
-        int index               = [summaryVaules[@"index"] intValue];
-        NSLog(@"Add story Line %@ %i",storyLineText, index);
-        StoryLine *storyLine = [self addRemoteStoryLine:storyLineText forcedWord:forcedWord index:index];
-        [self checkForStoryEnd:storyLine];
-    } since:nil completionHandler:^(NSError *error) {
-        if (error)NSLog(@"Error downloading existing conversation messages %@", error);
-        [self updateStoryWithAllSentMessages];
-    }];
+-(NSMutableAttributedString*)buildAttributedTextStory{
+    NSMutableAttributedString *returnVal = [[NSMutableAttributedString alloc] init];
+    NSAttributedString *space = [[NSAttributedString alloc] initWithString:@" "];
+    for (int i=0;i<[self lineCount];i++){
+        StoryLine *storyLine = [self storyLineAtIndex:i];
+        
+        if ([storyLine respondsToSelector:@selector(attributedText)])[returnVal appendAttributedString:[storyLine attributedText]];
+        
+        [returnVal appendAttributedString:space];
+    }
+    return returnVal;
+}
+
+
+-(void)addNewLocallyEnteredStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord{
+    StoryLine *storyLine = [[StoryLine alloc] initWithText:storyLineText forcedWord:forcedWord index:self.nextAvailableStoreLineIndex];
+    self.nextAvailableStoreLineIndex++;
+    if ([self isTwoPlayerGame])[self sendStoryLineToConversation:storyLine];
+    [self.storyLines addObject:storyLine];
+    [self pickNewRandomWord];
+}
+
+
+-(BOOL)isMyTurn{
+    if (self.onePlayerGame==YES)return YES;
+    if (self.storyOwner==YES && (self.lineCount % 2==0))return YES;
+    if (self.storyOwner==NO  && (self.lineCount % 2==1))return YES;
+    return NO;
+}
+
+
+#pragma mark -
+#pragma mark Private Methods
+
+-(void)sendPendingMessageToConversation{
+    for (int i=0;i<[self lineCount];i++){
+        StoryLine *storyLine = [self storyLineAtIndex:i];
+        if (storyLine.messageSentToConversation==NO){
+            [self sendStoryLineToConversation:storyLine];
+        }
+    }
 }
 
 
@@ -67,70 +101,23 @@
         if (error)NSLog(@"Error downloading existing conversation messages %@", error);
         [self.delegate storyDidUpdate];
     }];
-
-}
-
-
-
-
-
--(void)respondToRendezvousByTag{
-    //Player B joins an existing Rendezvous
-    [self.qredoClient respondWithTag:[self santizedStoryName]
-              completionHandler:^(QredoConversation *conversation, NSError *error) {
-                  if (error){
-                      NSLog(@"Failed to join rendezvous with error: %@", error.localizedDescription);
-                      return;
-                  }
-                  self.conversation = conversation;
-                  self.storyOwner = NO;
-                  NSLog(@"Join another users rendezvous");
-                  [conversation addConversationObserver: self];
-              }
-     ];
-}
-
-
-
--(void)sendStoryLineToConversation:(StoryLine*)storyLine{
-    //Send a storyLine if we have a conversation
-    if (!self.conversation){
-        NSLog(@"Player 2 has not connected yet - waiting for connection before sending storyline");
-        return;
-    }
     
-    NSDate *currentDateTime = [NSDate date];
-    NSDictionary *messageSummaryValues = @{@"index": [NSNumber numberWithInt:storyLine.index],
-                                           @"word": storyLine.forcedWord,
-                                           @"date": currentDateTime};
-    QredoConversationMessage *conversationMessage = [[QredoConversationMessage alloc] initWithValue:[storyLine.text dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                           dataType: @"com.qredo.plaintext"
-                                                                                      summaryValues: messageSummaryValues];
-    
-    if (conversationMessage){
-        [self.conversation publishMessage: conversationMessage completionHandler: ^(QredoConversationHighWatermark *messageHighWatermark, NSError *error) {
-            if (error){
-                NSLog(@"Posting message failed with error: %@", error.localizedDescription);
-            }
-            NSLog(@"Posted message: %@",storyLine.text);
-        }];
-    }
-}
-
--(void)prepareQredoConnections{
-     if (self.onePlayerGame==NO)[self createOrJoinRendezvous];
 }
 
 
-
-#pragma Private Methods
--(void)sendPendingMessageToConversation{
-    for (int i=0;i<[self lineCount];i++){
-        StoryLine *storyLine = [self storyLineAtIndex:i];
-        if (storyLine.messageSentToConversation==NO){
-            [self sendStoryLineToConversation:storyLine];
-        }
-    }
+-(void)updateStoryWithAllReceivedMessages{
+    [self.conversation enumerateReceivedMessagesUsingBlock:^(QredoConversationMessage *message, BOOL *stop) {
+        NSDictionary *summaryVaules = message.summaryValues;
+        NSString *storyLineText = [[NSString alloc] initWithData: message.value encoding: NSUTF8StringEncoding];
+        NSString *forcedWord    = summaryVaules[@"word"];
+        int index               = [summaryVaules[@"index"] intValue];
+        NSLog(@"Add story Line %@ %i",storyLineText, index);
+        StoryLine *storyLine = [self addRemoteStoryLine:storyLineText forcedWord:forcedWord index:index];
+        [self checkForStoryEnd:storyLine];
+    } since:nil completionHandler:^(NSError *error) {
+        if (error)NSLog(@"Error downloading existing conversation messages %@", error);
+        [self updateStoryWithAllSentMessages];
+    }];
 }
 
 
@@ -153,26 +140,9 @@
     self.storyEnded = YES;
 }
 
--(NSMutableAttributedString*)buildAttributedTextStory{
-    NSMutableAttributedString *returnVal = [[NSMutableAttributedString alloc] init];
-    NSAttributedString *space = [[NSAttributedString alloc] initWithString:@" "];
-    for (int i=0;i<[self lineCount];i++){
-        StoryLine *storyLine = [self storyLineAtIndex:i];
-        
-        if ([storyLine respondsToSelector:@selector(attributedText)])[returnVal appendAttributedString:[storyLine attributedText]];
-        
-        [returnVal appendAttributedString:space];
-    }
-    return returnVal;
-}
 
 
--(BOOL)isMyTurn{
-    if (self.onePlayerGame==YES)return YES;
-    if (self.storyOwner==YES && (self.lineCount % 2==0))return YES;
-    if (self.storyOwner==NO  && (self.lineCount % 2==1))return YES;
-    return NO;
-}
+
 
 -(void)startNewStory{
     [self pickNewRandomWord];
@@ -205,14 +175,6 @@
 }
      
 
--(void)addNewLocallyEnteredStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord{
-    StoryLine *storyLine = [[StoryLine alloc] initWithText:storyLineText forcedWord:forcedWord index:self.nextAvailableStoreLineIndex];
-    self.nextAvailableStoreLineIndex++;
-    if ([self isTwoPlayerGame])[self sendStoryLineToConversation:storyLine];
-    [self.storyLines addObject:storyLine];
-    [self pickNewRandomWord];
-}
-
 -(StoryLine*)storyLineAtIndex:(long)index{
     return [self.storyLines objectAtIndex:index];
 }
@@ -229,7 +191,9 @@
     }
 }
 
-#pragma QredoRendezvousObserver methods
+#pragma mark -
+#pragma mark QredoRendezvousObserver methods
+
 /** Called when a new response is received */
 - (void)qredoRendezvous:(QredoRendezvous*)rendezvous didReceiveReponse:(QredoConversation *)conversation{
     self.conversation = conversation;
@@ -238,9 +202,9 @@
 }
 
 
+#pragma mark -
+#pragma mark QredoConversationObserver methods
 
-
-#pragma QredoConversationObserver methods
 /** Called when a onversation receives a new message */
 - (void)qredoConversation:(QredoConversation *)conversation didReceiveNewMessage:(QredoConversationMessage *)message{
     // Process an incoming message
@@ -254,7 +218,9 @@
 }
 
 
-#pragma Qredo Access Methods
+#pragma mark -
+#pragma mark Qredo Access Methods - Both Public & private
+
 -(void)saveToVault{
     NSDictionary *item1SummaryValues = @{@"StoryTitle": self.title};
     NSString *text = [[self buildAttributedTextStory] string];
@@ -358,6 +324,49 @@
     }];
 }
 
+
+-(void)respondToRendezvousByTag{
+    //Player B joins an existing Rendezvous
+    [self.qredoClient respondWithTag:[self santizedStoryName]
+                   completionHandler:^(QredoConversation *conversation, NSError *error) {
+                       if (error){
+                           NSLog(@"Failed to join rendezvous with error: %@", error.localizedDescription);
+                           return;
+                       }
+                       self.conversation = conversation;
+                       self.storyOwner = NO;
+                       NSLog(@"Join another users rendezvous");
+                       [conversation addConversationObserver: self];
+                   }
+     ];
+}
+
+
+
+-(void)sendStoryLineToConversation:(StoryLine*)storyLine{
+    //Send a storyLine if we have a conversation
+    if (!self.conversation){
+        NSLog(@"Player 2 has not connected yet - waiting for connection before sending storyline");
+        return;
+    }
+    
+    NSDate *currentDateTime = [NSDate date];
+    NSDictionary *messageSummaryValues = @{@"index": [NSNumber numberWithInt:storyLine.index],
+                                           @"word": storyLine.forcedWord,
+                                           @"date": currentDateTime};
+    QredoConversationMessage *conversationMessage = [[QredoConversationMessage alloc] initWithValue:[storyLine.text dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                           dataType: @"com.qredo.plaintext"
+                                                                                      summaryValues: messageSummaryValues];
+    
+    if (conversationMessage){
+        [self.conversation publishMessage: conversationMessage completionHandler: ^(QredoConversationHighWatermark *messageHighWatermark, NSError *error) {
+            if (error){
+                NSLog(@"Posting message failed with error: %@", error.localizedDescription);
+            }
+            NSLog(@"Posted message: %@",storyLine.text);
+        }];
+    }
+}
 
 
 @end

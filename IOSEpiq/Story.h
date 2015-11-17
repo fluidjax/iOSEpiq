@@ -24,18 +24,17 @@
 
 @interface Story : NSObject <QredoRendezvousObserver, QredoConversationObserver>
 
-@property(strong) NSString *title;
-@property(strong) WordList *wordList;
-@property(strong) NSString *currentWord;
-@property(assign) BOOL onePlayerGame;
-@property(assign) BOOL storyEnded;
-@property(assign) int nextAvailableStoreLineIndex;
+@property NSString *title;
+@property WordList *wordList;
+@property NSString *currentWord;
+@property BOOL onePlayerGame;
+@property BOOL storyEnded;
+@property int nextAvailableStoreLineIndex;
 @property QredoClient *qredoClient;
-@property(strong) id<StoryProtocol> delegate;
+@property id<StoryProtocol> delegate;
 
 
 -(instancetype)initWithTitle:(NSString*)title wordList:(WordList*)wordList;
-
 -(NSMutableAttributedString*)buildAttributedTextStory;
 -(void)addNewLocallyEnteredStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord;
 -(StoryLine*)storyLineAtIndex:(long)index;
@@ -43,7 +42,6 @@
 -(BOOL)isMyTurn;
 -(void)saveToVault;
 -(void)prepareQredoConnections;
--(void)createOrJoinRendezvous;
 -(void)sendEndStoryMessage;
 
 @end

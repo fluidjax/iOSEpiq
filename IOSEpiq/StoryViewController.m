@@ -12,17 +12,11 @@
 
 @interface StoryViewController ()
 
-
-@property (assign) BOOL canAddNewStoryLine;
-
-
-
+@property BOOL canAddNewStoryLine;
 @property (weak, nonatomic) IBOutlet UIView *backgroundView;
 @property (weak, nonatomic) IBOutlet UITextView *storyTextEntryView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backGroundBottomConstraint;
-
 @property (weak, nonatomic) IBOutlet UIView *textEntryBackgroundView;
-
 @property (weak, nonatomic) IBOutlet UILabel *forceWordLabel;
 @property (weak, nonatomic) IBOutlet UITextView *storyViewTextView;
 
@@ -31,12 +25,6 @@
 @end
 
 @implementation StoryViewController
-
--(void)storyDidUpdate{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshScreen];
-    });
-}
 
 
 -(void)viewDidLoad{
@@ -67,33 +55,17 @@
     }
 }
 
--(void)endStoryPressed{
-    [self.story sendEndStoryMessage];
-    [self storyDidUpdate];
-}
-
 
 -(void)refreshScreen{
     self.storyViewTextView.attributedText = [self.story buildAttributedTextStory];
     
     if (self.story.storyEnded==YES) {
-        self.forceWordLabel.text = @"Story Complete";
-        self.textEntryBackgroundView.hidden=YES;
-        [self.story saveToVault];
-        self.navigationItem.rightBarButtonItem = nil;
+        [self setUpViewForEndedStory];
     }else{
-        self.forceWordLabel.text = self.story.currentWord;
-        self.storyTextEntryView.text = @"";
-        
         if ([self.story isMyTurn]){
-            self.forceWordLabel.text = self.story.currentWord;
-            self.navigationItem.rightBarButtonItem.enabled=YES;
-            self.textEntryBackgroundView.hidden=NO;
-            [self.storyTextEntryView becomeFirstResponder];
+            [self setupViewForMyTurn];
         }else{
-            self.forceWordLabel.text = @"Waiting. . . ";
-            self.navigationItem.rightBarButtonItem.enabled=NO;
-            self.textEntryBackgroundView.hidden=YES;
+            [self setupViewForOtherUsersTurn];
         }
     }
     [self scrollToTheEndOfTheStoryView];
@@ -101,11 +73,36 @@
 }
 
 
--(void)checkForEndOfStory{
-    if (self.story.storyEnded==YES){
-        self.textEntryBackgroundView.hidden=YES;
-        [self.story saveToVault];
-    }
+-(void)endStoryPressed{
+    [self.story sendEndStoryMessage];
+    [self storyDidUpdate];
+}
+
+
+-(void)setupViewForMyTurn{
+    self.forceWordLabel.text = self.story.currentWord;
+    self.storyTextEntryView.text = @"";
+    self.forceWordLabel.text = self.story.currentWord;
+    self.navigationItem.rightBarButtonItem.enabled=YES;
+    self.textEntryBackgroundView.hidden=NO;
+    [self.storyTextEntryView becomeFirstResponder];
+}
+
+
+-(void)setupViewForOtherUsersTurn{
+    self.forceWordLabel.text = self.story.currentWord;
+    self.storyTextEntryView.text = @"";
+    self.forceWordLabel.text = @"Waiting. . . ";
+    self.navigationItem.rightBarButtonItem.enabled=NO;
+    self.textEntryBackgroundView.hidden=YES;
+}
+
+
+-(void)setUpViewForEndedStory{
+    self.forceWordLabel.text = @"Story Complete";
+    self.textEntryBackgroundView.hidden=YES;
+    [self.story saveToVault];
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 
@@ -118,7 +115,6 @@
 -(BOOL)wordHasBeenUsed{
     NSString *textEntered = self.storyTextEntryView.text;
     return [textEntered rangeOfString:self.story.currentWord options:NSCaseInsensitiveSearch].location != NSNotFound;
-    
 }
 
 
@@ -143,7 +139,9 @@
 }
 
 
-#pragma Handle Keyboard Display/Hide
+#pragma mark -
+#pragma mark Handle Keyboard Display/Hide
+
 // Call this method somewhere in your view controller setup code.
 - (void)registerForKeyboardNotifications{
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -166,5 +164,16 @@
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification{
     self.backGroundBottomConstraint.constant =0;
 }
+
+#pragma mark -
+#pragma mark StoryProtocol method
+
+-(void)storyDidUpdate{
+    //ensure updates to screen are done on the main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshScreen];
+    });
+}
+
 
 @end

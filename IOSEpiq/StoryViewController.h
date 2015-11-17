@@ -13,6 +13,6 @@
 @class WordList;
 
 @interface StoryViewController : UIViewController <UITextViewDelegate, StoryProtocol>
-@property (strong) Story *story;
+@property Story *story;
 
 @end
