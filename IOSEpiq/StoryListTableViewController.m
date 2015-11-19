@@ -11,7 +11,7 @@
 #import "CompletedStoryViewController.h"
 @interface StoryListTableViewController ()
 
-@property (strong) NSMutableArray *storyList;
+@property NSMutableArray *storyList;
 @end
 
 @implementation StoryListTableViewController

@@ -11,6 +11,6 @@
 
 @interface StoryListTableViewController : UITableViewController
 
-@property (strong) QredoClient *qredoClient;
+@property QredoClient *qredoClient;
 
 @end

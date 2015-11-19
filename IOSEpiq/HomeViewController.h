@@ -10,9 +10,9 @@
 
 @interface HomeViewController : UIViewController
 
-@property (strong) NSString *password;
-@property (strong) NSString *username;
-@property (assign) BOOL firstRun;
+@property NSString *password;
+@property NSString *username;
+@property BOOL firstRun;
 
 @end
 

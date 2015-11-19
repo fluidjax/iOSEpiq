@@ -26,7 +26,7 @@
     [super viewDidLoad];
     [self initializeScreenState];
     if ([self haveLoginValues]){
-        [self performSegueWithIdentifier: @"LoginToHome" sender: self];
+ //       [self performSegueWithIdentifier: @"LoginToHome" sender: self];
     }
 }
 

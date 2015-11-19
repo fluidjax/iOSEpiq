@@ -12,7 +12,7 @@
 
 
 @interface Story ()
-@property(strong) NSMutableArray *storyLines;
+@property(strong) NSMutableArray<StoryLine *> *storyLines;
 @property(assign) BOOL storyOwner;
 
 @property QredoRendezvous *rendezvous;

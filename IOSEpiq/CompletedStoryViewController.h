@@ -12,7 +12,7 @@
 
 @interface CompletedStoryViewController : UIViewController
 
-@property(strong) QredoVaultItemMetadata *vaultItemMetadata;
-@property(strong) QredoClient *qredoClient;
+@property QredoVaultItemMetadata *vaultItemMetadata;
+@property QredoClient *qredoClient;
 
 @end

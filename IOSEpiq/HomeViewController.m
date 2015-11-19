@@ -16,12 +16,10 @@
 
 
 @interface HomeViewController ()
+@property QredoClient *qredoClient;
 @property (weak, nonatomic) IBOutlet UITextField *storyTitleTextField;
-
 @property (weak, nonatomic) IBOutlet UISegmentedControl *howManyPlayers;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
-@property QredoClient *qredoClient;
-
 @end
 
 @implementation HomeViewController

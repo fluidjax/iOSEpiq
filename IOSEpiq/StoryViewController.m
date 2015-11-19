@@ -19,9 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIView *textEntryBackgroundView;
 @property (weak, nonatomic) IBOutlet UILabel *forceWordLabel;
 @property (weak, nonatomic) IBOutlet UITextView *storyViewTextView;
-
-
-
 @end
 
 @implementation StoryViewController
@@ -92,7 +89,7 @@
 -(void)setupViewForOtherUsersTurn{
     self.forceWordLabel.text = self.story.currentWord;
     self.storyTextEntryView.text = @"";
-    self.forceWordLabel.text = @"Waiting. . . ";
+    self.forceWordLabel.text = @"Waiting for other user . . . ";
     self.navigationItem.rightBarButtonItem.enabled=NO;
     self.textEntryBackgroundView.hidden=YES;
 }
@@ -128,8 +125,7 @@
     UIAlertAction* ok = [UIAlertAction
                          actionWithTitle:@"OK"
                          style:UIAlertActionStyleDefault
-                         handler:^(UIAlertAction * action)
-                         {
+                         handler:^(UIAlertAction * action){
                              [missingWordAlert dismissViewControllerAnimated:YES completion:nil];
                              
                          }];
@@ -161,9 +157,11 @@
     self.backGroundBottomConstraint.constant =kbSize.height;
 }
 
+
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification{
     self.backGroundBottomConstraint.constant =0;
 }
+
 
 #pragma mark -
 #pragma mark StoryProtocol method

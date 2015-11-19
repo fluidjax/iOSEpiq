@@ -8,16 +8,20 @@
 
 #import "StoryLine.h"
 
+@interface StoryLine ()
+@end
+
+
 @implementation StoryLine
 
 
 -(instancetype)initWithText:(NSString*)text forcedWord:(NSString*)forcedWord index:(int)index{
     self = [super init];
     if (self) {
-        self.forcedWord                 = forcedWord;
-        self.text                       = text;
-        self.messageSentToConversation  = NO;
-        self.index                      = index;
+        _forcedWord                 = forcedWord;
+        _text                       = text;
+        _messageSentToConversation  = NO;
+        _index                      = index;
     }
     return self;
 }

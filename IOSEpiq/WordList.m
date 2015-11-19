@@ -9,7 +9,7 @@
 #import "WordList.h"
 
 @interface WordList ()
-@property(strong) NSArray *wordlist;
+@property(strong) NSArray<NSString*> *wordlist;
 
 @end
 
