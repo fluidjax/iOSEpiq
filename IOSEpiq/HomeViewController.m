@@ -25,12 +25,11 @@
 @implementation HomeViewController
 
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+-(void)viewDidAppear:(BOOL)animated{
     self.startButton.enabled=NO;
     self.navigationItem.leftBarButtonItem=nil;
     self.navigationController.navigationBarHidden=YES;
-
+    
     QredoClientOptions *clientOptions = [[QredoClientOptions alloc] initDefaultPinnnedCertificate];
     if (self.firstRun==YES){
         clientOptions.resetData = YES;
@@ -40,19 +39,18 @@
     
     [QredoClient initializeWithAppSecret:@"appSecret"
                                   userId:self.username
-                                userSecret:self.password
+                              userSecret:self.password
                                  options:clientOptions
                        completionHandler:^(QredoClient *clientArg, NSError *error) {
-                                  // handle error, store client in property
-                                  if (error)                                  {
-                                      NSLog(@"Authorize failed with error: %@", error.localizedDescription);
-                                      return;
-                                  }
-                                  self.qredoClient = clientArg;
-                                  self.startButton.enabled=YES;
-                              }];
+                           // handle error, store client in property
+                           if (error)                                  {
+                               NSLog(@"Authorize failed with error: %@", error.localizedDescription);
+                               return;
+                           }
+                           self.qredoClient = clientArg;
+                           self.startButton.enabled=YES;
+                       }];
 }
-
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
   

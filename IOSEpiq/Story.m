@@ -12,7 +12,7 @@
 
 
 @interface Story ()
-@property(strong) NSMutableArray<StoryLine *> *storyLines;
+@property(strong) NSMutableArray *storyLines;
 @property(assign) BOOL storyOwner;
 
 @property QredoRendezvous *rendezvous;
@@ -161,7 +161,7 @@
      
 -(StoryLine*)addRemoteStoryLine:(NSString*)storyLineText forcedWord:(NSString*)forcedWord index:(int)index{
     StoryLine *storyLine = [[StoryLine alloc] initWithText:storyLineText forcedWord:forcedWord index:index];
-    NSLog(@"Set story %@    %i", storyLine.text, index);
+    NSLog(@"Adding remote story line '%@'  with forcedWord '%i'", storyLine.text, index);
     
     if (index>[self.storyLines count]){
         for (int i=(int)[self.storyLines count];i<index;i++){
@@ -199,6 +199,7 @@
     self.conversation = conversation;
     [conversation addConversationObserver: self];
     [self sendPendingMessageToConversation];
+    NSLog(@"Incoming Rendezvous Connection made");
 }
 
 
@@ -215,11 +216,12 @@
     StoryLine *storyLine = [self addRemoteStoryLine:storyLineText forcedWord:forcedWord index:index];
     [self checkForStoryEnd:storyLine];
     [self.delegate storyDidUpdate];
+    NSLog(@"Conversation received a new remote message");
 }
 
 
 #pragma mark -
-#pragma mark Qredo Access Methods - Both Public & private
+#pragma mark Qredo Access Methods 
 
 -(void)saveToVault{
     NSDictionary *item1SummaryValues = @{@"StoryTitle": self.title};
@@ -246,7 +248,7 @@
     
     
     QredoRendezvousConfiguration *rendezvousConfiguration =
-    [[QredoRendezvousConfiguration alloc] initWithConversationType: @"com.qredo.epiq"
+    [[QredoRendezvousConfiguration alloc] initWithConversationType: @"com.qredo.epiq~"
                                                    durationSeconds: 0
                                           isUnlimitedResponseCount: true ];
     
@@ -257,14 +259,14 @@
                                              if (error.code==3003){
                                                  //this rendezvous already exists so connect to it
                                                  //check if its an exsiting one of ours
-                                                 
+                                                  NSLog(@"Rendezvous with Tag %@ already exsits", [self santizedStoryName]);
                                                  [self getExsitingRendezvousWithThisStoryTag];
                                              }else{
                                                  NSLog(@"Error creating Rendezvous: %@", error.localizedDescription);
                                              }
                                              return;
                                          }else{
-                                             NSLog(@"Rendezvous created successsfully!");
+                                             NSLog(@"New Rendezvous created successsfully!");
                                              self.storyOwner = YES;
                                              self.rendezvous = rendezvous;
                                              [self.rendezvous addRendezvousObserver:self];
@@ -283,9 +285,10 @@
 -(void)getExsitingRendezvousWithThisStoryTag{
     [self.qredoClient fetchRendezvousWithTag:[self santizedStoryName] completionHandler:^(QredoRendezvous *rendezvous, NSError *error) {
         if (rendezvous){
+            NSLog(@"Connected to the exsiting rendezvous");
             [self getConversationMetadataWithRendezvous:rendezvous];
         }else{
-            //no rendezvous, its been created by another user, but this user hasn't responded to it
+            NSLog(@"No previous connection to this rendezvous in vault");
             [self respondToRendezvousByTag];
         }
     }];
@@ -304,9 +307,11 @@
             NSLog(@"Error enumerating conversations");
         }else{
             if (matchedConversationMetadata){
+                NSLog(@"Found a conversationRef for the rendezvous");
                 [self getConversationWithRef:matchedConversationMetadata.conversationRef];
             }else{
                 //no conversation found - start a new one conversation by tag
+                NSLog(@"No conversations for the rendezvous");
                 [self respondToRendezvousByTag];
             }
         }
@@ -316,6 +321,7 @@
 
 -(void)getConversationWithRef:(QredoConversationRef *)conversationRef{
     [self.qredoClient fetchConversationWithRef:conversationRef completionHandler:^(QredoConversation *conversation, NSError *error) {
+        NSLog(@"Got conversation for conversationRef");
         self.conversation = conversation;
         [self.conversation addConversationObserver:self];
         if (self.conversation.metadata.amRendezvousOwner==YES)self.storyOwner=YES;
@@ -335,7 +341,7 @@
                        }
                        self.conversation = conversation;
                        self.storyOwner = NO;
-                       NSLog(@"Join another users rendezvous");
+                       NSLog(@"Join another users rendezvous with tag %@", [self santizedStoryName]);
                        [conversation addConversationObserver: self];
                    }
      ];
@@ -363,7 +369,7 @@
             if (error){
                 NSLog(@"Posting message failed with error: %@", error.localizedDescription);
             }
-            NSLog(@"Posted message: %@",storyLine.text);
+            NSLog(@"Posted message: '%@'",storyLine.text);
         }];
     }
 }
