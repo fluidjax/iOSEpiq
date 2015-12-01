@@ -25,10 +25,13 @@
 @implementation HomeViewController
 
 
+-(void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden=YES;
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     self.startButton.enabled=NO;
     self.navigationItem.leftBarButtonItem=nil;
-    self.navigationController.navigationBarHidden=YES;
     
     QredoClientOptions *clientOptions = [[QredoClientOptions alloc] initDefaultPinnnedCertificate];
     if (self.firstRun==YES){

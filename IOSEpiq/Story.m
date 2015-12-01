@@ -298,10 +298,15 @@
 
 -(void)getConversationMetadataWithRendezvous:(QredoRendezvous *)rendezvous{
     __block QredoConversationMetadata *matchedConversationMetadata;
+    NSString *lookingForTag = rendezvous.metadata.tag;
+    
     
     [self.qredoClient enumerateConversationsWithBlock:^(QredoConversationMetadata *conversationMetadata, BOOL *stop) {
-        matchedConversationMetadata = conversationMetadata;
-        *stop=YES;
+        if ([lookingForTag isEqualToString:conversationMetadata.rendezvousTag]){
+            matchedConversationMetadata = conversationMetadata;
+            *stop=YES;
+        }
+        
     } completionHandler:^(NSError *error) {
         if (error){
             NSLog(@"Error enumerating conversations");
