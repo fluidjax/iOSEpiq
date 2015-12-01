@@ -37,7 +37,7 @@
         clientOptions.resetData = NO;
     }
     
-    [QredoClient initializeWithAppSecret:@"appSecret"
+    [QredoClient initializeWithAppSecret:@"c4cff66e5d06bb63e3cb6928c93931c8"
                                   userId:self.username
                               userSecret:self.password
                                  options:clientOptions
